@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Triax Price Checker | Compare Prices Across Nigerian Stores & Markets</title>
+    <meta name="description" content="Compare verified prices across Jumia, Konga, Slot, Pointek, and open-air hubs like Computer Village &amp; Alaba International.">
+    <meta name="theme-color" content="#d2373b">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Ambient Animated Background Layer -->
+    <div class="ambient-background" aria-hidden="true">
+        <div class="ambient-orb orb-1"></div>
+        <div class="ambient-orb orb-2"></div>
+        <div class="ambient-orb orb-3"></div>
+        <div class="ambient-orb orb-4"></div>
+        <div class="ambient-grid"></div>
+    </div>
+
+    <!-- Top Sticky Navigation Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="brand-wrapper">
+                <a href="#home" class="brand" aria-label="Triax Price Checker Home">
+                    <div class="logo-icon">
+                        <span class="logo-symbol">
+                            <svg class="ui-icon ui-icon-fill" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="logo-text">
+                        <span class="brand-name">TRIAX<span class="brand-dot">.NG</span></span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="nav-center">
+                <div class="location-picker" id="location-picker" role="button" tabindex="0" title="Choose a location" aria-label="Choose a location">
+                    <span class="loc-icon" id="loc-icon">
+                        <svg class="ui-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                            <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                    </span>
+                    <div class="loc-text-wrap">
+                        <span class="loc-label">Choose a location</span>
+                        <span class="loc-value" id="loc-display">Detecting…</span>
+                    </div>
+                    <span class="loc-spinner hidden" id="loc-spinner" aria-hidden="true"></span>
+                </div>
+            </div>
+
+            <!-- Multi-Page Navigation Bar -->
+            <nav class="nav-links">
+                <a href="#home" class="nav-link active" data-route="home">
+                    <span class="nav-icon">
+                        <svg class="ui-icon" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+                            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            <polyline points="9 22 9 12 15 12 15 22"/>
+                        </svg>
+                    </span> Home
+                </a>
+                <a href="#browse" class="nav-link" data-route="browse">
+                    <span class="nav-icon">
+                        <svg class="ui-icon" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+                            <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+                            <path d="m3.3 7 8.7 5 8.7-5"/>
+                            <path d="M12 22V12"/>
+                        </svg>
+                    </span> Browse
+                </a>
+                <a href="#deals" class="nav-link" data-route="deals">
+                    <span class="nav-icon">
+                        <svg class="ui-icon icon-fire" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+                            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+                        </svg>
+                    </span> Deals
+                </a>
+                <a href="#admin" class="nav-link" data-route="admin">
+                    <span class="nav-icon">
+                        <svg class="ui-icon" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+                            <path d="M3 3v18h18"/>
+                            <path d="M18 17V9"/>
+                            <path d="M13 17V5"/>
+                            <path d="M8 17v-3"/>
+                        </svg>
+                    </span> Data Ops
+                </a>
+                <button class="theme-toggle" id="theme-toggle-btn" title="Toggle Light/Dark Theme" aria-label="Toggle Theme">
+                    <span id="theme-icon">
+                        <svg class="ui-icon" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+                            <circle cx="12" cy="12" r="4"/>
+                            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                        </svg>
+                    </span>
+                </button>
+
+                <!-- Auth: Login button (shown when logged out) -->
+                <button class="nav-auth-btn" id="auth-login-btn" onclick="window.TriaxAPI?.openAuthModal('login')" title="Sign in to your account">
+                    <svg class="ui-icon" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+                        <circle cx="12" cy="8" r="5"/>
+                        <path d="M20 21a8 8 0 0 0-16 0"/>
+                    </svg>
+                    <span>Sign In</span>
+                </button>
+
+                <!-- Auth: User pill (shown when logged in) -->
+                <div class="nav-user-pill hidden" id="auth-user-pill">
+                    <span class="nav-user-avatar">
+                        <svg class="ui-icon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                            <circle cx="12" cy="8" r="5"/>
+                            <path d="M20 21a8 8 0 0 0-16 0"/>
+                        </svg>
+                    </span>
+                    <span id="auth-user-name">User</span>
+                    <button class="nav-logout-btn" onclick="window.TriaxAPI?.Auth.logout()" title="Sign out">⏻</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- ================================================================
+             PAGE 1: HOME PAGE (#home)
+             ================================================================ -->
+        <section id="page-home" class="page-view active">
+            <!-- Hero Search Section -->
+            <div class="hero-section">
+                <div class="hero-badge">
+                    <span class="sparkle">
+                        <svg class="ui-icon" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" stroke="none" aria-hidden="true">
+                            <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+                        </svg>
+                    </span>
+                    <span>Live Price Comparison</span>
+                </div>
+                
+                <h1 class="hero-title">
+                    Know The <span class="text-gradient">Real Price</span> Before You Buy
+                </h1>
+                <p class="hero-subtitle">
+                    Compare verified prices across Jumia, Konga, Slot, Pointek, and open-air hubs like Computer Village &amp; Alaba International.
+                </p>
+
+                <!-- Search Bar with Quick Autocomplete -->
+                <div class="search-box-container">
+                    <div class="search-input-wrapper">
+                        <span class="search-icon">
+                            <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                                <circle cx="11" cy="11" r="7"/>
+                                <path d="m21 21-4.3-4.3"/>
+                            </svg>
+                        </span>
+                        <input type="text" id="home-search-input" placeholder="Search phones, laptops, solar batteries, cement, TVs..." autocomplete="off">
+                        <button id="home-clear-search-btn" class="clear-btn hidden" title="Clear search">&times;</button>
+                        <button id="home-search-btn" class="btn-primary">
+                            <span>Check Prices</span>
+                            <span class="btn-arrow">&rarr;</span>
+                        </button>
+                    </div>
+                    <div id="home-search-suggestions" class="suggestions-dropdown hidden"></div>
+                </div>
+
+                <!-- Trending Searches -->
+                <div class="trending-tags">
+                    <span class="trend-label">Trending:</span>
+                    <button class="trend-pill" data-query="iPhone 15">iPhone 15 Pro Max</button>
+                    <button class="trend-pill" data-query="Solar Battery">Luminous 220Ah Battery</button>
+                    <button class="trend-pill" data-query="Starlink">Starlink Kit</button>
+                    <button class="trend-pill" data-query="Cement">Dangote Cement</button>
+                    <button class="trend-pill" data-query="MacBook">MacBook Air M2</button>
+                </div>
+
+                <!-- Quick Category Navigation -->
+                <div class="quick-categories">
+                    <span class="quick-label">Categories:</span>
+                    <div class="cat-pill-group">
+                        <button class="cat-pill active" onclick="navigateToCategory('all')">All</button>
+                        <button class="cat-pill" onclick="navigateToCategory('phones')">Phones & Laptops</button>
+                        <button class="cat-pill" onclick="navigateToCategory('solar')">Solar & Power</button>
+                        <button class="cat-pill" onclick="navigateToCategory('appliances')">Appliances</button>
+                        <button class="cat-pill" onclick="navigateToCategory('groceries')">Groceries</button>
+                        <button class="cat-pill" onclick="navigateToCategory('building')">Building</button>
+                        <button class="cat-pill" onclick="navigateToCategory('vehicles')">Vehicles</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FEATURED LIVE DEALS CAROUSEL -->
+            <section class="featured-carousel-section" id="featured-carousel-container">
+                <div class="section-header-row">
+                    <div class="section-title-wrap">
+                        <h2 class="section-heading">Today's Best Deals</h2>
+                        <p class="section-sub">Verified savings across online stores and open-air markets</p>
+                    </div>
+                    
+                    <div class="carousel-navigation-controls">
+                        <button class="carousel-control-btn prev-btn" id="carousel-prev-btn" title="Previous Slide" aria-label="Previous Deal">&lsaquo;</button>
+                        <button class="carousel-control-btn pause-btn" id="carousel-play-toggle" title="Pause Autoplay" aria-label="Pause Carousel">&#10074;&#10074;</button>
+                        <button class="carousel-control-btn next-btn" id="carousel-next-btn" title="Next Slide" aria-label="Next Deal">&rsaquo;</button>
+                    </div>
+                </div>
+
+                <!-- Carousel Viewport -->
+                <div class="carousel-viewport" id="deals-carousel-viewport">
+                    <div class="carousel-track" id="deals-carousel-track">
+                        <!-- Populated dynamically via JS with clean product pictures -->
+                    </div>
+                </div>
+
+                <!-- Carousel Progress Indicators -->
+                <div class="carousel-indicators" id="carousel-indicators-bar">
+                    <!-- Dots dynamically rendered -->
+                </div>
+            </section>
+
+            <!-- VERIFIED STORES & OPEN-AIR MARKET MARQUEE TICKER -->
+            <div class="trusted-stores-marquee">
+                <div class="marquee-title">
+                    <span>PRICES ACROSS:</span>
+                </div>
+                <div class="marquee-container">
+                    <div class="marquee-track">
+                        <div class="store-badge"><span class="store-circle jumia"></span> Jumia Nigeria</div>
+                        <div class="store-badge"><span class="store-circle konga"></span> Konga</div>
+                        <div class="store-badge"><span class="store-circle slot"></span> Slot Systems</div>
+                        <div class="store-badge"><span class="store-circle pointek"></span> Pointek Online</div>
+                        <div class="store-badge"><span class="store-circle cvillage"></span> Computer Village Ikeja</div>
+                        <div class="store-badge"><span class="store-circle alaba"></span> Alaba Int'l Market</div>
+                        <!-- Duplicate for infinite seamless scroll -->
+                        <div class="store-badge"><span class="store-circle jumia"></span> Jumia Nigeria</div>
+                        <div class="store-badge"><span class="store-circle konga"></span> Konga</div>
+                        <div class="store-badge"><span class="store-circle slot"></span> Slot Systems</div>
+                        <div class="store-badge"><span class="store-circle pointek"></span> Pointek Online</div>
+                        <div class="store-badge"><span class="store-circle cvillage"></span> Computer Village Ikeja</div>
+                        <div class="store-badge"><span class="store-circle alaba"></span> Alaba Int'l Market</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Trending Products Showcase (Home Page Grid with Real Photos) -->
+            <div class="home-products-section">
+                <div class="section-header-row">
+                    <div>
+                        <h2 class="section-heading">Popular Price Benchmarks</h2>
+                        <p class="section-sub">Verified prices updated within the last 14 days</p>
+                    </div>
+                    <a href="#browse" class="btn-secondary btn-sm">View All &rarr;</a>
+                </div>
+                
+                <div class="product-cards-grid" id="home-featured-grid">
+                    <!-- Populated dynamically via JS with product photos -->
+                </div>
+            </div>
+
+            <!-- Value Props / Why Triax Banner -->
+            <div class="transparency-banner">
+                <div class="banner-col">
+                    <div class="banner-badge">&lt; 14-Day SLA</div>
+                    <h3>Fresh Data Only</h3>
+                    <p>Prices older than 14 days are excluded from market medians.</p>
+                </div>
+                <div class="banner-col">
+                    <div class="banner-badge">Online + Physical</div>
+                    <h3>Open-Air Audits</h3>
+                    <p>Walk-in rates from Computer Village and Alaba Market alongside online stores.</p>
+                </div>
+                <div class="banner-col">
+                    <div class="banner-badge">Net Price</div>
+                    <h3>No Hidden Fees</h3>
+                    <p>Compare total cost with delivery and fees included before you buy.</p>
+                </div>
+            </div>
+
+            <!-- ============================================================
+                 COMMUNITY PRICE CONTRIBUTION — COMING SOON SECTION
+                 Status: Pending management approval. Frontend preview only.
+                 ============================================================ -->
+            <section class="community-contribution-section" id="community-contribute" aria-label="Community Price Contribution Coming Soon">
+
+                <!-- Decorative top divider -->
+                <div class="contrib-divider" aria-hidden="true"></div>
+
+                <div class="contrib-inner">
+
+                    <!-- Left: Badge + headline + description + CTA -->
+                    <div class="contrib-content">
+                        <div class="contrib-badge-row">
+                            <span class="contrib-coming-soon-badge">
+                                <span class="contrib-badge-dot"></span>
+                                COMING SOON
+                            </span>
+                            <span class="contrib-tag">Community</span>
+                        </div>
+
+                        <h2 class="contrib-heading">
+                            Help Us Track <span class="text-gradient">Real Market Prices</span>
+                        </h2>
+
+                        <p class="contrib-description">
+                            Bought something recently? Soon you can upload your receipt, share real market prices, and earn reward points redeemable for <strong>mobile airtime</strong>.
+                        </p>
+
+                        <!-- How it will work — 3-step preview -->
+                        <div class="contrib-steps">
+                            <div class="contrib-step">
+                                <div class="contrib-step-icon">
+                                    <svg class="ui-icon step-icon-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                                        <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+                                        <circle cx="12" cy="13" r="3"/>
+                                    </svg>
+                                </div>
+                                <div class="contrib-step-text">
+                                    <strong>1. Upload Receipt</strong>
+                                    <span>Photo or scan</span>
+                                </div>
+                            </div>
+                            <div class="contrib-step-arrow" aria-hidden="true">→</div>
+                            <div class="contrib-step">
+                                <div class="contrib-step-icon">
+                                    <svg class="ui-icon step-icon-svg text-green" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                        <polyline points="22 4 12 14.01 9 11.01"/>
+                                    </svg>
+                                </div>
+                                <div class="contrib-step-text">
+                                    <strong>2. Verification</strong>
+                                    <span>Reviewed for accuracy</span>
+                                </div>
+                            </div>
+                            <div class="contrib-step-arrow" aria-hidden="true">→</div>
+                            <div class="contrib-step">
+                                <div class="contrib-step-icon">
+                                    <svg class="ui-icon step-icon-svg text-amber" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                                        <rect x="3" y="8" width="18" height="4" rx="1"/>
+                                        <path d="M12 8v13"/>
+                                        <path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/>
+                                        <path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.9 4.9 0 0 1 12 8a4.9 4.9 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/>
+                                    </svg>
+                                </div>
+                                <div class="contrib-step-text">
+                                    <strong>3. Earn Airtime</strong>
+                                    <span>Convert to credit</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CTA — non-functional, visual only -->
+                        <div class="contrib-cta-row">
+                            <button class="contrib-cta-btn" disabled aria-disabled="true" title="Coming soon — pending approval">
+                                <span class="contrib-cta-icon">
+                                    <svg class="ui-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                                        <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+                                        <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+                                        <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+                                        <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+                                    </svg>
+                                </span>
+                                <span>Be Ready to Contribute!</span>
+                            </button>
+                            <span class="contrib-cta-note">Launching soon</span>
+                        </div>
+                    </div>
+
+                    <!-- Right: Visual reward card preview -->
+                    <div class="contrib-visual" aria-hidden="true">
+                        <div class="contrib-card-preview">
+                            <div class="contrib-card-header">
+                                <span class="contrib-card-avatar">
+                                    <svg class="ui-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                                        <circle cx="12" cy="8" r="5"/>
+                                        <path d="M20 21a8 8 0 0 0-16 0"/>
+                                    </svg>
+                                </span>
+                                <div>
+                                    <div class="contrib-card-name">Your Reward Account</div>
+                                    <div class="contrib-card-sub">Points &amp; Airtime</div>
+                                </div>
+                                <span class="contrib-card-badge-coming">SOON</span>
+                            </div>
+
+                            <div class="contrib-points-display">
+                                <div class="contrib-points-label">Total Points</div>
+                                <div class="contrib-points-value">—</div>
+                                <div class="contrib-points-sub">Submit receipts to start earning</div>
+                            </div>
+
+                            <div class="contrib-reward-items">
+                                <div class="contrib-reward-row">
+                                    <span>
+                                        <svg class="ui-icon text-muted" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                                            <rect width="20" height="16" x="2" y="4" rx="2"/>
+                                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                                        </svg> Receipt Submitted
+                                    </span>
+                                    <span class="contrib-reward-pts pending">+50 pts</span>
+                                </div>
+                                <div class="contrib-reward-row">
+                                    <span>
+                                        <svg class="ui-icon text-green" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                                            <polyline points="20 6 9 17 4 12"/>
+                                        </svg> Verified &amp; Approved
+                                    </span>
+                                    <span class="contrib-reward-pts pending">+100 pts</span>
+                                </div>
+                                <div class="contrib-reward-row">
+                                    <span>
+                                        <svg class="ui-icon text-cyan" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                                            <rect width="14" height="20" x="5" y="2" rx="2" ry="2"/>
+                                            <path d="M12 18h.01"/>
+                                        </svg> Airtime Reward
+                                    </span>
+                                    <span class="contrib-reward-pts pending">500 pts = ₦200</span>
+                                </div>
+                            </div>
+
+                            <div class="contrib-card-footer">
+                                <div class="contrib-receipt-icon">
+                                    <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                                        <path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/>
+                                        <path d="M8 7h8M8 11h8M8 15h5"/>
+                                    </svg>
+                                </div>
+                                <span>Receipt-powered price intelligence</span>
+                            </div>
+                        </div>
+
+                        <!-- Floating decorative elements -->
+                        <div class="contrib-float contrib-float-1">
+                            <svg class="ui-icon" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
+                                <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg> Lagos
+                        </div>
+                        <div class="contrib-float contrib-float-2">
+                            <svg class="ui-icon text-green" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg> Verified
+                        </div>
+                        <div class="contrib-float contrib-float-3">
+                            <svg class="ui-icon text-amber" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
+                                <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg> Secure
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Bottom info strip -->
+                <div class="contrib-info-strip">
+                    <div class="contrib-info-item">
+                        <span class="contrib-info-icon">
+                            <svg class="ui-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
+                                <path d="m9 12 2 2 4-4"/>
+                            </svg>
+                        </span>
+                        <span>Verified before publishing</span>
+                    </div>
+                    <div class="contrib-info-item">
+                        <span class="contrib-info-icon">
+                            <svg class="ui-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                                <rect width="16" height="16" x="4" y="4" rx="2"/>
+                                <rect width="6" height="6" x="9" y="9" rx="1"/>
+                                <path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/>
+                            </svg>
+                        </span>
+                        <span>AI receipt reading</span>
+                    </div>
+                    <div class="contrib-info-item">
+                        <span class="contrib-info-icon">
+                            <svg class="ui-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+                                <polyline points="16 7 22 7 22 13"/>
+                            </svg>
+                        </span>
+                        <span>Real market medians</span>
+                    </div>
+                    <div class="contrib-info-item">
+                        <span class="contrib-info-icon">
+                            <svg class="ui-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                                <rect width="14" height="20" x="5" y="2" rx="2" ry="2"/>
+                                <path d="M12 18h.01"/>
+                            </svg>
+                        </span>
+                        <span>Airtime across all Nigerian networks</span>
+                    </div>
+                </div>
+
+            </section>
+            <!-- END: Community Price Contribution Coming Soon Section -->
+
+        </section>
+
+        <!-- ================================================================
+             PAGE 2: BROWSE CATALOG PAGE (#browse)
+             ================================================================ -->
+        <section id="page-browse" class="page-view hidden">
+            <!-- Breadcrumb Navigation -->
+            <nav class="breadcrumb-bar" aria-label="Breadcrumb">
+                <a href="#home">Home</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">Browse Products</span>
+            </nav>
+
+            <div class="browse-header-row">
+                <div>
+                    <h1 class="page-heading">Supported Product Benchmarks</h1>
+                    <p class="page-subheading">Select any product to view full store rankings, price deltas, and historical trend charts.</p>
+                </div>
+                <div class="catalog-stats">
+                    <span class="badge-trust"><span id="browse-count">0</span> Products Monitored</span>
+                </div>
+            </div>
+
+            <!-- Filter & Search Toolbar -->
+            <div class="browse-toolbar">
+                <div class="browse-search-wrapper">
+                    <span class="search-icon">
+                        <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                            <circle cx="11" cy="11" r="7"/>
+                            <path d="m21 21-4.3-4.3"/>
+                        </svg>
+                    </span>
+                    <input type="text" id="browse-search-input" placeholder="Filter by product name, model SKU, or brand..." autocomplete="off">
+                    <button id="browse-clear-search-btn" class="clear-btn hidden" title="Clear search" aria-label="Cancel search">&times;</button>
+                </div>
+
+                <div class="toolbar-controls">
+                    <div class="filter-group">
+                        <label for="browse-cat-filter">Category:</label>
+                        <select id="browse-cat-filter">
+                            <option value="all">All Categories</option>
+                            <option value="phones">Phones & Laptops</option>
+                            <option value="solar">Solar & Power</option>
+                            <option value="appliances">TVs & Appliances</option>
+                            <option value="groceries">Groceries & Food</option>
+                            <option value="building">Building Materials</option>
+                            <option value="vehicles">Vehicles & Auto</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="browse-sort-select">Sort:</label>
+                        <select id="browse-sort-select">
+                            <option value="relevance">Relevance</option>
+                            <option value="price-asc">Lowest Price First</option>
+                            <option value="price-desc">Highest Price First</option>
+                            <option value="obs-count">Most Verified Sellers</option>
+                            <option value="name">Name A-Z</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full Catalog Product Grid with Real Photos -->
+            <div class="product-cards-grid" id="browse-product-grid">
+                <!-- Populated dynamically via JS with crisp photos -->
+            </div>
+        </section>
+
+        <!-- ================================================================
+             PAGE 3: PRODUCT DETAIL & STORE COMPARISON PAGE (#product-detail)
+             ================================================================ -->
+        <section id="page-product-detail" class="page-view hidden">
+            <!-- Breadcrumbs & Back Button -->
+            <div class="detail-nav-header">
+                <nav class="breadcrumb-bar" aria-label="Breadcrumb">
+                    <a href="#home">Home</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <a href="#browse">Browse Products</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-current" id="detail-breadcrumb-title">Product Details</span>
+                </nav>
+
+                <a href="#browse" class="btn-back">
+                    <span>&larr;</span> Back to All Products
+                </a>
+            </div>
+
+            <!-- Detailed Single Product Comparison View -->
+            <div id="dedicated-product-container">
+                <!-- Rendered dynamically by renderProductDetailPage() -->
+            </div>
+        </section>
+
+        <!-- ================================================================
+             PAGE 4: LIVE DEALS & PRICE DROPS PAGE (#deals)
+             ================================================================ -->
+        <section id="page-deals" class="page-view hidden">
+            <!-- Breadcrumb Navigation -->
+            <nav class="breadcrumb-bar" aria-label="Breadcrumb">
+                <a href="#home">Home</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">Live Deals & Price Drops</span>
+            </nav>
+
+            <div class="browse-header-row">
+                <div>
+                    <h1 class="page-heading">Today's Biggest Price Gaps</h1>
+                    <p class="page-subheading">Hand-verified deals where open-air hubs or specific retailers beat typical market medians.</p>
+                </div>
+            </div>
+
+            <!-- Deals Carousel Viewport -->
+            <div class="deals-page-carousel-wrap">
+                <div class="carousel-viewport" id="deals-page-carousel-viewport">
+                    <div class="carousel-track" id="deals-page-carousel-track">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deals Grid with Real Product Photos -->
+            <div class="product-cards-grid" id="deals-page-grid">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </section>
+
+        <!-- ================================================================
+             PAGE 5: ADMIN DATA OPS & GOVERNANCE PAGE (#admin)
+             ================================================================ -->
+        <section id="page-admin" class="page-view hidden">
+            <!-- Breadcrumb Navigation -->
+            <nav class="breadcrumb-bar" aria-label="Breadcrumb">
+                <a href="#home">Home</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">Data Quality & Ops Dashboard</span>
+            </nav>
+
+            <div class="admin-header">
+                <div>
+                    <h1 class="admin-title">Data Quality & Ops Dashboard</h1>
+                    <p class="admin-subtitle">Monitor data freshness, ingestion health, and user feedback resolution.</p>
+                </div>
+                <div class="badge-trust">
+                    <span class="shield-icon">
+                        <svg class="ui-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
+                            <path d="m9 12 2 2 4-4"/>
+                        </svg>
+                    </span> PRD v1.0 Governance &amp; Audit Active
+                </div>
+            </div>
+
+            <!-- KPI Summary Cards -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-top">
+                        <span class="kpi-title">Data Freshness Index</span>
+                        <span class="kpi-badge">FR-07</span>
+                    </div>
+                    <div class="kpi-value text-green">89.2%</div>
+                    <div class="kpi-sub">Verified observations &lt; 14 days old</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-top">
+                        <span class="kpi-title">Search Match Rate</span>
+                        <span class="kpi-badge">FR-01</span>
+                    </div>
+                    <div class="kpi-value text-cyan">94.8%</div>
+                    <div class="kpi-sub">Queries mapped to canonical products</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-top">
+                        <span class="kpi-title">Pending User Reports</span>
+                        <span class="kpi-badge">SLA &lt; 24h</span>
+                    </div>
+                    <div class="kpi-value text-amber" id="pending-reports-count">1</div>
+                    <div class="kpi-sub">Price variance / out-of-stock reports</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-top">
+                        <span class="kpi-title">Tracked Sources</span>
+                        <span class="kpi-badge">FR-03</span>
+                    </div>
+                    <div class="kpi-value text-emerald">24 Sources</div>
+                    <div class="kpi-sub">E-commerce APIs & Field Market Audits</div>
+                </div>
+            </div>
+
+            <!-- Audit Logs & Data Moderation Table -->
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <div>
+                        <h3>User Data Reports & Moderation Queue</h3>
+                        <p class="admin-subtext">Crowdsourced price verification reports undergoing manual data quality review.</p>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Report ID</th>
+                                <th>Product Name</th>
+                                <th>Issue Type</th>
+                                <th>Submitted Context</th>
+                                <th>Audit Date</th>
+                                <th>Review Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-reports-tbody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Report Price Issue Modal -->
+    <div id="report-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h3 id="modal-title">Report Price or Listing Issue</h3>
+                    <p class="modal-sub">Help keep Nigerian market benchmarks 100% accurate.</p>
+                </div>
+                <button class="close-modal-btn" id="close-modal" aria-label="Close Modal">&times;</button>
+            </div>
+            <form id="report-form">
+                <input type="hidden" id="report-product-id">
+                
+                <div class="form-group">
+                    <label>Product Reference</label>
+                    <input type="text" id="report-product-name" readonly class="input-disabled">
+                </div>
+
+                <div class="form-group">
+                    <label for="report-reason">Issue Category</label>
+                    <select id="report-reason" required>
+                        <option value="">Select reason...</option>
+                        <option value="Outdated Price">Price is outdated / changed recently</option>
+                        <option value="Incorrect Model Match">Wrong model or variant mismatch</option>
+                        <option value="Item Out of Stock">Item is out of stock at seller</option>
+                        <option value="Hidden Fee Omitted">Hidden delivery or merchant surcharge</option>
+                        <option value="Better Price Found">I found a cheaper seller in Nigeria</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="report-details">Details / Correct Price Reference</label>
+                    <textarea id="report-details" rows="3" placeholder="Provide extra context, e.g. 'Found it at Alaba Market for ₦275,000 as of this morning.'" required></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="cancel-report-btn">Cancel</button>
+                    <button type="submit" class="btn-primary">Submit Report</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Interactive Price Drop Alert Toast -->
+    <div id="alert-toast" class="alert-toast hidden">
+        <div class="toast-content">
+            <span class="toast-icon">
+                <svg class="ui-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                    <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                    <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                </svg>
+            </span>
+            <div class="toast-text">
+                <strong id="toast-title">Price Alert Created!</strong>
+                <span id="toast-message">We will notify you when price drops.</span>
+            </div>
+            <button class="toast-close-btn" id="toast-close">&times;</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="brand">
+                    <div class="logo-icon small">
+                        <span class="logo-symbol">
+                            <svg class="ui-icon ui-icon-fill" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <span class="brand-name">TRIAX<span class="brand-dot">.NG</span></span>
+                </div>
+                <p class="footer-desc">
+                    Compare verified prices across Jumia, Konga, Slot, Pointek, and open-air hubs like Computer Village &amp; Alaba International.
+                </p>
+                <p class="footer-copy">&copy; 2026 Triax Price Checker. Compliant with PRD v1.0 Governance Standards.</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>Pages</h4>
+                    <a href="#home">Home</a>
+                    <a href="#browse">Browse Products</a>
+                    <a href="#deals">Live Deals</a>
+                    <a href="#admin">Data Ops Dashboard</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Top Categories</h4>
+                    <a href="#browse" onclick="navigateToCategory('phones')">iPhone & Laptop Deals</a>
+                    <a href="#browse" onclick="navigateToCategory('solar')">Solar Inverters & Batteries</a>
+                    <a href="#browse" onclick="navigateToCategory('building')">Dangote Cement & Steel</a>
+                    <a href="#browse" onclick="navigateToCategory('appliances')">Smart 4K UHD TVs</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Tracked Hubs</h4>
+                    <span>Computer Village, Lagos</span>
+                    <span>Alaba International, Lagos</span>
+                    <span>Wuse & Utako Markets, Abuja</span>
+                    <span>Bodija Market, Ibadan</span>
+                </div>
+                <div class="footer-col">
+                    <h4>Data Integrity</h4>
+                    <span>Freshness SLA: &lt; 14 Days</span>
+                    <span>Multi-Source Median Model</span>
+                    <span>Community Price Verification</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================================================================
+         AUTH MODAL — Login & Register
+         Functional when backend is running; gracefully hidden otherwise.
+         ================================================================ -->
+    <div id="auth-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+        <div class="modal-backdrop" onclick="window.TriaxAPI?.closeAuthModal()"></div>
+        <div class="modal-content auth-modal-content">
+            <div class="modal-header">
+                <div>
+                    <h3 id="auth-modal-title">My Account</h3>
+                    <p class="modal-sub">Access your Triax Price Intelligence dashboard.</p>
+                </div>
+                <button class="close-modal-btn" onclick="window.TriaxAPI?.closeAuthModal()" aria-label="Close">&#times;</button>
+            </div>
+
+            <!-- Tab Switcher -->
+            <div class="auth-tabs">
+                <button class="auth-tab-btn active" data-tab="login" onclick="window.TriaxAPI?.switchAuthTab('login')">Sign In</button>
+                <button class="auth-tab-btn" data-tab="register" onclick="window.TriaxAPI?.switchAuthTab('register')">Create Account</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="auth-login-form" class="auth-form" onsubmit="window.TriaxAPI?.handleLogin(event)">
+                <p id="login-form-error" class="auth-error-msg hidden"></p>
+                <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="Your password" autocomplete="current-password" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" id="login-submit-btn" class="btn-primary" style="width:100%; justify-content:center; text-align:center;">Sign In</button>
+                </div>
+                <p class="auth-switch-hint">Don't have an account? <button type="button" class="auth-link-btn" onclick="window.TriaxAPI?.switchAuthTab('register')">Create one free</button></p>
+            </form>
+
+            <!-- Register Form -->
+            <form id="auth-register-form" class="auth-form hidden" onsubmit="window.TriaxAPI?.handleRegister(event)">
+                <p id="register-form-error" class="auth-error-msg hidden"></p>
+                <div class="auth-name-row">
+                    <div class="form-group">
+                        <label for="reg-firstname">First Name</label>
+                        <input type="text" id="reg-firstname" placeholder="Emeka" autocomplete="given-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-lastname">Last Name</label>
+                        <input type="text" id="reg-lastname" placeholder="Okafor" autocomplete="family-name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="reg-email">Email Address</label>
+                    <input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Password <span class="form-hint">(min. 8 characters)</span></label>
+                    <input type="password" id="reg-password" placeholder="Create a strong password" autocomplete="new-password" required minlength="8">
+                </div>
+                <div class="form-group">
+                    <label for="reg-confirm-password">Confirm Password</label>
+                    <input type="password" id="reg-confirm-password" placeholder="Repeat your password" autocomplete="new-password" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" id="register-submit-btn" class="btn-primary" style="width:100%; justify-content:center; text-align:center;">Create Account</button>
+                </div>
+                <p class="auth-switch-hint">Already have an account? <button type="button" class="auth-link-btn" onclick="window.TriaxAPI?.switchAuthTab('login')">Sign in</button></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
