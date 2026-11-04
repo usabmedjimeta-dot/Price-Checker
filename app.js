@@ -391,7 +391,7 @@ function handleRouting() {
     });
 
     // Route views
-    if (route === "home") {
+    if (route === "home" || route === "community-contribute") {
         document.getElementById("page-home").classList.remove("hidden");
         currentPage = "home";
         renderCarousel();
@@ -426,8 +426,11 @@ function handleRouting() {
         renderHomeFeaturedProducts();
     }
 
-    // Scroll to top on page change
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (route === "community-contribute") {
+        document.getElementById("community-contribute").scrollIntoView({ behavior: "smooth" });
+    } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
 }
 
 function navigateTo(routeWithParams) {

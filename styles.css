@@ -2295,6 +2295,7 @@ body {
 .community-contribution-section {
     position: relative;
     margin: 3rem 0 0 0;
+    scroll-margin-top: 90px;
     background: linear-gradient(135deg,
         rgba(210, 55, 59, 0.06) 0%,
         var(--bg-surface) 40%,
@@ -2390,6 +2391,14 @@ body {
     color: var(--text-secondary);
     line-height: 1.75;
     max-width: 580px;
+    margin-bottom: 1.75rem;
+}
+
+.contrib-auth-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
     margin-bottom: 1.75rem;
 }
 
@@ -3175,5 +3184,4 @@ body {
     margin-right: 0.25rem;
     vertical-align: -0.12em;
 }
-
 
